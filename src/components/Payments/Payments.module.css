@@ -1,0 +1,20 @@
+* {
+    padding: 0%;
+    margin: 15px;
+}
+
+.headerName {
+    display: flex;
+}
+
+.logo {
+        max-width: 468px ;
+        max-height: 94px ;
+    
+}
+
+.title {
+    margin: auto;
+    font-size: 40px;
+}
+
