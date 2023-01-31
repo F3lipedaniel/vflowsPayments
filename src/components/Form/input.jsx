@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import { useField } from '@unform/core';
-
+import InputMask from 'react-input-mask';
 
 
 export default function Input({name, ...rest}) {
@@ -21,7 +21,7 @@ export default function Input({name, ...rest}) {
   
     return (
       <div>
-      <input ref={inputRef} defaultValue={defaultValue} {...rest}/>
+      <InputMask mask="99.999.999/9999-99" ref={inputRef} defaultValue={defaultValue} {...rest}/>
       {error && <span style={{color:'#F00'}}>{error}</span>}
       </div>
       );

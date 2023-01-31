@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@unform/web": "^2.1.6",
+    "phosphor-icons": "^1.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-input-mask": "^3.0.0-alpha.2",
     "react-router-dom": "^6.8.0",
     "yup": "^0.32.11"
   },

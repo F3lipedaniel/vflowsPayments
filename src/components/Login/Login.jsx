@@ -1,32 +1,20 @@
 import styles from './login.module.css';
 import { useEffect } from 'react';
 import { useNavigate  } from 'react-router-dom';
-import React, {useRef, useState} from 'react';
-import {Form} from '@unform/web'
+import React, {useRef, useState, useContext} from 'react';
+import {Form} from '@unform/web';
+import {validCNPJs} from '../Company/Company';
 import Input from '../Form/input';
 import * as Yup from 'yup';
+import { AuthContext } from '../../contexts/AuthContext';
+
 
 export function Login () {
-
-    const [user, setUser] = useState({});
+    const {setAuth, auth} = useContext(AuthContext);
     const formRef = useRef(null);
-    const [cnpj, setCnpj] = useState('');
+    const [cnpj, setCnpj] = useState();
     const navigateTo  = useNavigate();
-    const validCNPJs = [    {
-        cnpj: "91.526.551/0001-49",
-        nomeFantasia: "Empresa 1",
-        razaoSocial: "Empresa 1 Ltda."
-    },
-    {
-        cnpj: "77.955.732/0001-60",
-        nomeFantasia: "Empresa 2",
-        razaoSocial: "Empresa 2 Ltda."
-    },
-    {
-        cnpj: "13.571.303/0001-06",
-        nomeFantasia: "Empresa 3",
-        razaoSocial: "Empresa 3 Ltda."
-    }];
+
 
     async function handleSubmit(data, {reset}) {
         try {
@@ -34,7 +22,7 @@ export function Login () {
  
         
         const schema = Yup.object().shape({
-            CNPJ: Yup.string().required('CNPJ INVÁLIDO')
+            CNPJ: Yup.string().matches(/^\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}$/, { message: 'CNPJ INVÁLIDO' }).required('CNPJ OBRIGATÓRIO')
         });
 
         await schema.validate(data, {
@@ -63,20 +51,23 @@ export function Login () {
       // Função de validação de CNPJ
       
 
-      function handleCnpjChange(event) {
-        setCnpj(event.target.value);
+      function HandleCnpjChange(event) {
+        const {value} = event.target
+        setCnpj(value);
+      }
+
+     function cnpjIsExists() {
+        validCNPJs.map(item => {
+
+            if(item.cnpj === cnpj){
+                setAuth(item)
+                navigateTo('/Payments');
+            } 
+            
+        })
+        
       }
     
-      function validateCnpj() {
-        validCNPJs.map(item => {
-            if(item.cnpj === cnpj){
-                navigateTo('/Payments')
-            } else {
-                
-            }
-        }) 
-
-      }
     
     return (
         <aside className={styles.Container}> 
@@ -89,8 +80,8 @@ export function Login () {
                     
                     <Form className={styles.form}  ref={formRef} onSubmit={handleSubmit}>
                         <p className={styles.form.strong}>CNPJ</p>
-                        <Input className={styles.form} value={cnpj} onChange={handleCnpjChange} type="text" name="CNPJ"/>
-                        <button className={styles.button} onClick={validateCnpj} type='submit'>Acessar</button>
+                        <Input className={styles.form} value={cnpj} onChange={HandleCnpjChange} type="text" name="CNPJ"/>
+                        <button type='submit' onClick={cnpjIsExists} className={styles.button}>Acessar</button>
                     </Form>
                 </div>
 

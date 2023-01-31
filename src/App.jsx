@@ -1,26 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
-import {Login} from './components/Login/Login';
-import {Payments} from './components/Payments/Payments';
-import {PaymentsDetails} from './components/PaymentsDetails/PaymentsDetails';
+import React, {useContext} from 'react';
+import PublicRoutes from './components/routes/public.routes';
+import PrivateRoutes from './components/routes/private.routes';
+import { AuthContext } from './contexts/AuthContext';
 import './index.css';
 
 function App() {
-
-  return (
-    <Router> 
-        <Routes>
-          <Route exact path="/" element={<Login/>}/>
-          <Route/>
-          <Route path="/payments" element={<Payments/>}/>
-            
-          <Route/>
-          <Route path="/paymentsDetails" element={<PaymentsDetails/>}/>
-            
-          <Route/>
-        </Routes>
-    </Router>
-    
-  )
+  const {auth} = useContext(AuthContext)
+  console.log("auth", auth)
+  return auth ? <PrivateRoutes/> : <PublicRoutes/>
 }
-
-export default App
+export default App;
